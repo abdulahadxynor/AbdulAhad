@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LRB Colection - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  
+    <style>
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth; /* Good to keep for smooth jumps */
+    }
+
+    /* --- Core fix for scrolling background --- */
+    body, html {
+      height: 100%; /* Still helps define viewport height */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      overflow-y: auto; /* Allow vertical scroll */
+    }
+
+    .video-background {
+      position: fixed; /* Stays in place */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10; /* Furthest back */
+    }
+
+    .video-overlay {
+      position: fixed; /* Stays in place */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay for readability */
+      z-index: -9; /* Above video, below content */
+    }
+    /* --- End Core fix --- */
+
+    /* Original .content style is not used directly, but its concepts are now in video-overlay and hero-box */
+    .content h1 {
+      font-size: 3rem;
+      text-shadow: 2px 2px 5px black;
+    }
+    .content button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background-color: #ff00cc;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .content button:hover {
+      background-color: #ff66cc;
+    }
+
+    /* Remove the body background gradient as video will cover it */
+    /* body {
+      height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffee);
+      background-size: 400% 400%;
+      animation: moveBg 15s ease infinite;
+    } */
+
+    @keyframes moveBg { /* This animation is now unused */
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 1000; /* Stays on top */
+    }
+
+    .logo {
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffccff;
+    }
+
+    #welcome {
+      color: white;
+      margin-top: 110px; /* Adjusted to be below the fixed header */
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      animation: fadein 2s ease-in;
+      position: relative; /* Essential for z-index to work */
+      z-index: 1; /* Above video overlay */
+      padding-top: 20px; /* Add some space if content is short */
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      min-height: calc(100vh - 170px); /* Adjust based on header/welcome height to push footer down for scroll test */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px; /* Added padding to ensure content isn't flush */
+      position: relative; /* Essential for z-index to work */
+      z-index: 1; /* Above video overlay */
+      padding-bottom: 50px; /* Give some space before footer */
+    }
+
+    .hero-box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transform: perspective(800px) rotateY(10deg);
+      transition: 0.5s;
+      max-width: 600px; /* Constrain width for better look */
+    }
+
+    .hero-box:hover {
+      transform: perspective(800px) rotateY(0deg) scale(1.05);
+    }
+
+    .hero-box h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-box p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+    }
+
+    .hero-box button {
+      background: white;
+      border: none;
+      padding: 10px 25px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero-box button:hover {
+      background: #ffccff;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      position: relative; /* Essential for z-index to work */
+      z-index: 1; /* Above video overlay */
+      margin-top: auto; /* Pushes footer to the bottom if content is short */
+    }
+
+    /* To demonstrate scrolling, add more content here if hero doesn't fill the screen enough */
+    .dummy-content {
+      height: 800px; /* Large height to force scroll */
+      background: rgba(255,255,255,0.05);
+      margin: 2rem;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.8);
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+    }
+  </style>
+</head>
+<body>
+
+
+
+
+  <header>
+     
+  <img src="file (1).png" alt="My Website Logo" width="80" height="auto"> 
+      <div class="logo">LRB Colection</div>   
+<nav>
+      <a href="#">Home</a>
+      <a href="product.html">Products</a>
+      <a href="Contact Us.html">Contact</a>
+      <a href="login&signup.html">SignUp&LogIn</a>
+    </nav>
+  </header>
+
+  <div id="welcome">Welcome!</div>
+
+  <video class="video-background" autoplay muted loop>
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="video-overlay"></div> <section class="hero">
+    <div class="hero-box">
+      <h1>Welcome to LRB Colection</h1>
+      <p>Explore trendy products for your perfect look — accessories, style & fashion!</p>
+      <a href="product.html">
+        <button>Shop Now</button>
+      </a>
+    </div>
+  </section>
+
+  
+  <div class="dummy-content">
+      More content here...
+  </div>
+
+
+  <footer>
+    &copy; 2025 LRB Colection. All rights reserved.
+  </footer>
+
+  <script>
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+      document.getElementById("welcome").textContent = "👋 Welcome back, " + user + "!";
+    } else {
+      document.getElementById("welcome").textContent = "👋 Welcome to LRB Colection!"; // Changed from "Abdul Store" for consistency
+        
+    }
+
+
+       
+  </script>
+
+</body>
+</html>

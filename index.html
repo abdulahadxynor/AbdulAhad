@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abdul Ahad - Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(0,0,0,0.85);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 2rem;
+      color: #8a2be2;
+    }
+    nav a {
+      margin: 0 1rem;
+      color: #f0f0f0;
+      text-decoration: none;
+      position: relative;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background: #20c997;
+      transition: width 0.3s;
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+    section {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(138,43,226,0.3), transparent 60%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      animation: typewriter 4s steps(40) 1s 1 normal both, blinkTextCursor 500ms steps(40) infinite normal;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #20c997;
+    }
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blinkTextCursor {
+      from { border-right-color: #20c997; }
+      to { border-right-color: transparent; }
+    }
+    .btn {
+      display: inline-block;
+      margin: 1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      background: linear-gradient(45deg, #8a2be2, #20c997);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 20px #20c997;
+    }
+    .about {
+      background: #111;
+      border-radius: 12px;
+      padding: 3rem;
+      margin: 2rem auto;
+      max-width: 800px;
+      box-shadow: 0 0 30px rgba(138,43,226,0.3);
+    }
+    .skills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .skill {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #8a2be2, #20c997);
+      color: #fff;
+      font-weight: bold;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 2rem;
+      perspective: 1000px;
+      transition: transform 0.6s;
+      text-decoration: none;
+      color: #fff;
+      display: block;
+    }
+    .card:hover {
+      transform: rotateY(15deg) scale(1.05);
+      box-shadow: 0 0 20px rgba(138,43,226,0.5);
+    }
+    footer {
+      background: #000;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    /* Custom glowing orb cursor with particles */
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, rgba(138,43,226,0.9), rgba(32,201,151,0.7));
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      transform: translate(-50%, -50%);
+      z-index: 2000;
+    }
+    .particle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(138,43,226,0.7);
+      pointer-events: none;
+      z-index: 1999;
+      animation: fadeOut 0.6s forwards;
+    }
+    @keyframes fadeOut {
+      to { transform: scale(0.2); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>عبدالآحد</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  
+
+  <section class="hero">
+    <h2> • Hi, I’m Abdul Ahad | Developer • </h2>
+    <a href="mailto:your-email@example.com" class="btn">Hire Me (Email)</a>
+    <a href="https://wa.me/923000000000?text=Hi%20Abdul%2C%20I%20want%20to%20hire%20you" target="_blank" class="btn">Hire Me (WhatsApp)</a>
+    <a href="resume.pdf" class="btn">Download CV</a>
+  </section>
+
+  <section id="about">
+    <div class="about">
+      <h2>About Me</h2>
+      <p>I’m a developer specializing in web development, blockchain, and cybersecurity. I create interactive, aesthetic websites with a focus on performance and user experience. Passionate about learning and innovation, always exploring new tech horizons.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="skill">HTML</div>
+      <div class="skill">CSS</div>
+      <div class="skill">JS</div>
+      <div class="skill">Python</div>
+      <div class="skill">Blockchain</div>
+      <div class="skill">Security</div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <a href="afterlifebank.html" class="card">
+        <h3>AfterLifeBank</h3>
+        <p>Futuristic fintech UI with holographic effects and seamless animations.</p>
+      </a>
+      <a href="elite-estates.html" class="card">
+        <h3>Elite Estates</h3>
+        <p>Luxury real estate platform with immersive 3D showcases and smooth scrolling.</p>
+      </a>
+      <a href="lrb-collection.html" class="card">
+        <h3>LRB Collection</h3>
+        <p>E-commerce platform for fashion — stylish, fast, and interactive.</p>
+      </a>
+      <a href="nex-ai.html" class="card">
+        <h3>NEX AI</h3>
+        <p>An AI chatbot that answers user property demands & questions smartly.</p>
+      </a>
+      <a href="quantum-coder.html" class="card">
+        <h3>Quantum Coder</h3>
+        <p>A futuristic coding dashboard with dark neon vibes and live coding animation.</p>
+      </a>
+      <a href="youtube-clone.html" class="card">
+        <h3>YouTube Clone</h3>
+        <p>A modern dark-mode YouTube-inspired platform with advanced UI elements.</p>
+      </a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Let’s work together! Reach out to me via email or WhatsApp.</p>
+    <a href="mailto:your-email@example.com" class="btn">Email Me</a>
+    <a href="https://wa.me/923000000000?text=Hi%20Abdul%2C%20I%20want%20to%20hire%20you" target="_blank" class="btn">Chat on WhatsApp</a>
+  </section>
+
+  <footer>
+    <p>© 2025 Abdul Ahad. All rights reserved.</p>
+  </footer>
+
+  <div class="cursor"></div>
+
+  <script>
+    const cursor = document.querySelector('.cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.top = e.clientY + 'px';
+      cursor.style.left = e.clientX + 'px';
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      document.body.appendChild(particle);
+      particle.style.top = e.clientY + 'px';
+      particle.style.left = e.clientX + 'px';
+      setTimeout(() => { particle.remove(); }, 600);
+    });
+  </script>
+</body>
+</html>

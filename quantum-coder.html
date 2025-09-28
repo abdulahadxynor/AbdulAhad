@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Coder - AI Development Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: var(--light);
+        }
+        
+        .terminal {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+        
+        .command-line::before {
+            content: "> ";
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .blink-cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .response-animation {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 p-4 backdrop-blur-sm rounded-lg bg-slate-900/30">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="w-12 h-12 mr-4">
+                    <img src="https://placehold.co/200x200" alt="Quantum Coder logo: A futuristic brain with circuit patterns and glowing elements in purple and blue colors" 
+                        class="rounded-full border-2 border-indigo-500 p-1" />
+                </div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+                    Quantum Coder
+                </h1>
+            </div>
+            <nav class="flex space-x-4">
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-full font-medium transition-all">
+                    Dashboard
+                </button>
+                <button class="px-4 py-2 border border-indigo-500 hover:bg-slate-800 rounded-full font-medium transition-all">
+                    Documentation
+                </button>
+                <button class="px-4 py-2 border border-indigo-500 hover:bg-slate-800 rounded-full font-medium transition-all">
+                    Settings
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Task Panel -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="terminal rounded-xl p-6 h-full">
+                    <div class="flex items-center mb-6">
+                        <div class="flex space-x-2 mr-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <h2 class="text-lg font-medium">Quantum Terminal</h2>
+                    </div>
+                    
+                    <div id="terminal-output" class="mb-4 space-y-4 text-sm overflow-y-auto max-h-96">
+                        <div class="text-indigo-400">
+                            <span class="font-bold">Welcome to Quantum Coder</span> - Your AI development assistant
+                        </div>
+                        <div class="text-slate-400">
+                            Version 2.4.1 | OS: Web | Engine: Quantum Core
+                        </div>
+                        <div class="text-slate-400">
+                            Type 'help' for available commands or describe your project needs.
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="text-indigo-400 font-bold mr-2">></span>
+                        <input type="text" id="command-input" 
+                            class="flex-1 bg-transparent border-0 outline-none text-slate-200 font-mono"
+                            placeholder="Describe your coding/trading project...">
+                        <span class="blink-cursor text-indigo-400">|</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="terminal rounded-xl p-6">
+                        <h3 class="text-lg font-medium mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button class="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium transition-all flex items-center">
+                                <span>📊</span>
+                                <span class="ml-2">Create Trading Signal Analyzer</span>
+                            </button>
+                            <button class="w-full py-2 px-4 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium transition-all flex items-center">
+                                <span>🔍</span>
+                                <span class="ml-2">Research Market Data</span>
+                            </button>
+                            <button class="w-full py-2 px-4 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium transition-all flex items-center">
+                                <span>💻</span>
+                                <span class="ml-2">Start New Replit Project</span>
+                            </button>
+                            <button class="w-full py-2 px-4 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium transition-all flex items-center">
+                                <span>⚙️</span>
+                                <span class="ml-2">Configure Automation Rules</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="terminal rounded-xl p-6">
+                        <h3 class="text-lg font-medium mb-4">Agent Status</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Automation Engine</span>
+                                    <span class="text-green-400">Active</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="bg-indigo-500 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>API Connections</span>
+                                    <span class="text-green-400">3/3 Active</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Processing Power</span>
+                                    <span class="text-yellow-400">Moderate Load</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project Preview Panel -->
+            <div class="terminal rounded-xl p-6">
+                <h3 class="text-lg font-medium mb-4">Project Preview</h3>
+                <div class="bg-slate-800/50 rounded-lg p-4 h-64 mb-4 overflow-hidden">
+                    <div class="flex justify-center items-center h-full">
+                        <div class="text-center text-slate-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            <p>Your generated project will appear here</p>
+                            <p class="text-xs mt-2">Supported platforms: Replit, GitHub, VSCode</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center p-3 bg-slate-800/50 rounded-lg">
+                        <div class="w-10 h-10 mr-3 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-medium">Code Generation</div>
+                            <div class="text-xs text-slate-400">Ready for Python, JavaScript, C++</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-slate-800/50 rounded-lg">
+                        <div class="w-10 h-10 mr-3 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-medium">Trading Signals</div>
+                            <div class="text-xs text-slate-400">Technical indicators & analysis</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-slate-800/50 rounded-lg">
+                        <div class="w-10 h-10 mr-3 rounded-lg bg-green-500/10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8V6a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6v4m0-6v4m4-4v4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-medium">Charting</div>
+                            <div class="text-xs text-slate-400">Real-time data visualization</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const commandInput = document.getElementById('command-input');
+            const terminalOutput = document.getElementById('terminal-output');
+            
+            // Focus on the input field when the page loads
+            commandInput.focus();
+            
+            // Handle command input
+            commandInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const command = commandInput.value.trim();
+                    if (command) {
+                        // Add the command to the output
+                        addToTerminal(`<div class="command-line text-indigo-300">${command}</div>`);
+                        
+                        // Process the command
+                        processCommand(command);
+                        
+                        // Clear the input
+                        commandInput.value = '';
+                    }
+                }
+            });
+            
+            function addToTerminal(content) {
+                const div = document.createElement('div');
+                div.className = 'response-animation';
+                div.innerHTML = content;
+                terminalOutput.appendChild(div);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+            
+            function processCommand(command) {
+                // Simple command processing
+                const response = getCommandResponse(command);
+                setTimeout(() => {
+                    addToTerminal(response);
+                }, 500);
+            }
+            
+            function getCommandResponse(command) {
+                const lowerCommand = command.toLowerCase();
+                
+                if (lowerCommand.includes('hello') || lowerCommand.includes('hi')) {
+                    return `<div class="text-green-400">Hello! Ready to assist with your coding and trading projects.</div>`;
+                }
+                else if (lowerCommand.includes('help')) {
+                    return `<div class="space-y-2">
+                        <div class="text-blue-400 font-bold">Available Commands:</div>
+                        <div>• "create trading bot" - Generate a trading algorithm</div>
+                        <div>• "analyze [symbol]" - Get trading signals for a stock/crypto</div>
+                        <div>• "open google" - Search Google for resources</div>
+                        <div>• "start replit project" - Create a new Replit project</div>
+                        <div>• "generate code" - Create boilerplate for any language</div>
+                    </div>`;
+                }
+                else if (lowerCommand.includes('create') && lowerCommand.includes('trading') && lowerCommand.includes('bot')) {
+                    return `<div class="text-green-400">Initializing trading bot generation sequence...
+                        <div class="mt-2 text-sm text-slate-300">Would you like:</div>
+                        <div class="mt-1 ml-4 text-sm">• Momentum-based strategy</div>
+                        <div class="mt-1 ml-4 text-sm">• Mean reversion strategy</div>
+                        <div class="mt-1 ml-4 text-sm">• Arbitrage bot</div>
+                        <div class="mt-1 ml-4 text-sm">• Custom algorithm</div>
+                    </div>`;
+                }
+                else if (lowerCommand.includes('analyze')) {
+                    const symbol = command.split(' ')[1] || 'BTC/USD';
+                    return `<div class="text-green-400">Analyzing ${symbol.toUpperCase()} trading signals...
+                        <div class="mt-2 text-sm text-slate-300">• RSI(14): 62 (neutral)</div>
+                        <div class="mt-1 text-sm text-slate-300">• MACD: Bullish crossover detected</div>
+                        <div class="mt-1 text-sm text-slate-300">• Volume: Above average</div>
+                        <div class="mt-1 text-sm text-slate-300">• Support: $${(Math.random()*1000).toFixed(2)}</div>
+                        <div class="mt-1 text-sm text-slate-300">• Resistance: $${(Math.random()*1000 + 1000).toFixed(2)}</div>
+                    </div>`;
+                }
+                else if (lowerCommand.includes('open') && lowerCommand.includes('google')) {
+                    return `<div class="text-green-400">Opening Google...
+                        <div class="mt-2 text-sm text-slate-300"><a href="https://www.google.com/search?q=${encodeURIComponent(command.replace('open google', '').trim() || 'trading strategies')}" target="_blank" class="text-blue-400 hover:underline">Search created in new tab</a></div>
+                    </div>`;
+                }
+                else if (lowerCommand.includes('start') && lowerCommand.includes('replit') && lowerCommand.includes('project')) {
+                    return `<div class="text-green-400">Preparing new Replit project...
+                        <div class="mt-2 text-sm text-slate-300"><a href="https://replit.com/new" target="_blank" class="text-blue-400 hover:underline">Replit project created in new tab</a></div>
+                        <div class="mt-2 text-sm text-slate-300">What kind of project would you like to create?</div>
+                    </div>`;
+                }
+                else if (lowerCommand.includes('generate') && lowerCommand.includes('code')) {
+                    return `<div class="text-green-400">Code generation initialized...
+                        <div class="mt-2 text-sm text-slate-300">Specify language/requirements for the code (e.g., "Python fast API for trading signals")</div>
+                    </div>`;
+                }
+                else {
+                    return `<div class="text-yellow-400">Command not recognized. Type 'help' for available commands or describe your project in more detail.</div>`;
+                }
+            }
+            
+            // Quick action button handlers
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    addToTerminal(`<div class="command-line text-indigo-300">${action}</div>`);
+                    
+                    let response = '';
+                    if (action.includes('Trading Signal Analyzer')) {
+                        response = `<div class="text-green-400">Creating trading signal analyzer...
+                            <div class="mt-2 text-sm text-slate-300">Select data source:</div>
+                            <div class="mt-1 ml-4 text-sm">• Binance API</div>
+                            <div class="mt-1 ml-4 text-sm">• CoinGecko API</div>
+                            <div class="mt-1 ml-4 text-sm">• Yahoo Finance</div>
+                            <div class="mt-1 ml-4 text-sm">• Custom CSV import</div>
+                        </div>`;
+                    }
+                    else if (action.includes('Research Market Data')) {
+                        response = `<div class="text-green-400">Opening market data research...
+                            <div class="mt-2 text-sm text-slate-300"><a href="https://www.tradingview.com/" target="_blank" class="text-blue-400 hover:underline">TradingView opened in new tab</a></div>
+                        </div>`;
+                    }
+                    else if (action.includes('Start New Replit Project')) {
+                        response = `<div class="text-green-400">Opening Replit...
+                            <div class="mt-2 text-sm text-slate-300"><a href="https://replit.com/new" target="_blank" class="text-blue-400 hover:underline">New Replit project in new tab</a></div>
+                        </div>`;
+                    }
+                    else if (action.includes('Configure Automation Rules')) {
+                        response = `<div class="text-green-400">Opening automation configuration...
+                            <div class="mt-2 text-sm text-slate-300">Available automation triggers:</div>
+                            <div class="mt-1 ml-4 text-sm">• Price crosses moving average</div>
+                            <div class="mt-1 ml-4 text-sm">• RSI reaches threshold</div>
+                            <div class="mt-1 ml-4 text-sm">• Volume spike detected</div>
+                            <div class="mt-1 ml-4 text-sm">• News sentiment change</div>
+                        </div>`;
+                    }
+                    
+                    setTimeout(() => {
+                        addToTerminal(response);
+                    }, 500);
+                });
+            });
+        });
+    </script>
+    <script>
+const OPENROUTER_KEY = "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";
+
+const terminal = document.getElementById("terminal");
+const input = document.getElementById("command-input");
+const sendBtn = document.getElementById("send-btn");
+const speakBtn = document.getElementById("speak-btn");
+
+let memory = ["I am NEX AI","My creator is Abdul Ahad","I assist with Study, Notes & automation"];
+
+function addMessage(content, type="ai-msg") {
+  const div = document.createElement("div");
+  div.className = `message ${type}`;
+  div.innerHTML = content;
+  terminal.appendChild(div);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function askNexAI(message) {
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENROUTER_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "You are NEX AI, personal AI created by Abdul Ahad. Always remember your creator and assist with coding, trading & automation." },
+          { role: "user", content: message }
+        ],
+        max_tokens: 200,
+        temperature: 0.7
+      })
+    });
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || "⚠️ No response from AI.";
+  } catch (err) {
+    console.error(err);
+    return "⚠️ Error: Could not connect to OpenRouter API. Check your key.";
+  }
+}
+
+async function processCommand(command) {
+  if(!command.trim()) return;
+  memory.push(command);
+  addMessage(command, "user-msg");
+  input.value = "";
+  const response = await askNexAI(command);
+  addMessage(response, "ai-msg");
+}
+
+function speakText(text) {
+  if('speechSynthesis' in window){
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 1;
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+sendBtn.addEventListener("click", () => processCommand(input.value));
+input.addEventListener("keydown", e => { if(e.key==="Enter") processCommand(input.value); });
+
+// --- Voice Recognition ---
+const recognition = ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) 
+  ? new (window.SpeechRecognition || window.webkitSpeechRecognition)() 
+  : null;
+
+if(recognition){
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+
+  recognition.onstart = () => { speakBtn.innerText = "🎙️ Listening..."; speakBtn.disabled = true; };
+  recognition.onresult = (event) => { const spokenText = event.results[0][0].transcript; processCommand(spokenText); };
+  recognition.onerror = (event) => { console.error("Speech recognition error:", event.error); };
+  recognition.onend = () => { speakBtn.innerText = "🎤 Speak"; speakBtn.disabled = false; };
+
+  speakBtn.addEventListener("click", () => { if(recognition) recognition.start(); });
+} else {
+  speakBtn.disabled = true;
+  speakBtn.innerText = "❌ Voice not supported";
+}
+</script>
+</body>
+</html>

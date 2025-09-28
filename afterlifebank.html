@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afterlife Bank by Abdul Ahad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0c0c1d;
+            --secondary: #1a1a3a;
+            --accent: #00d4ff;
+            --accent-dark: #0088cc;
+            --text: #ffffff;
+            --text-secondary: #a0a0c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .cyber-border {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .cyber-glow {
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .flip-text {
+            perspective: 1000px;
+        }
+
+        .flip-text-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-text:hover .flip-text-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-text-front, .flip-text-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .flip-text-back {
+            transform: rotateY(180deg);
+        }
+
+        .hologram-effect {
+            background: linear-gradient(45deg, rgba(0,212,255,0.1) 0%, rgba(0,136,204,0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+
+        .particle-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .memory-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0,212,255,0.3);
+        }
+
+        .encryption-badge {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid var(--accent);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent) }
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- 3D Particle Background -->
+    <canvas id="particleCanvas" class="particle-network"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-md py-4 px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full cyber-glow"></div>
+                <h1 class="text-2xl font-bold font-['Orbitron'] text-cyan-400">Afterlife BANK</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-cyan-300 hover:text-white transition-colors">Home</a>
+                <a href="#features" class="text-cyan-300 hover:text-white transition-colors">Features</a>
+                <a href="#security" class="text-cyan-300 hover:text-white transition-colors">Security</a>
+                <a href="#memories" class="text-cyan-300 hover:text-white transition-colors">Memories</a>
+                <a href="#contact" class="text-cyan-300 hover:text-white transition-colors">Contact</a>
+            </div>
+            <button class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg font-semibold transition-all transform hover:scale-105">
+               <a href="Bank login.html"> Secure Login </a>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="container mx-auto px-8 text-center z-10">
+            <div class="floating mb-8">
+                <div class="w-24 h-24 mx-auto bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full cyber-glow mb-6"></div>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold font-['Orbitron'] mb-6 text-white">
+                <span class="text-cyan-400">AfterLife</span> BANK
+            </h1>
+            <p class="text-xl md:text-2xl text-cyan-200 mb-8 typewriter">
+                More than a bank. A vault of your soul.
+                Your memories are currency. We safeguard them forever.
+            </p>
+            <p class="text-lg text-gray-300 mb-12 max-w-3xl mx-auto">
+                Secure, encrypted digital vault for your most precious memories. 
+                Share your life's journey with loved ones, accessible only when the time is right.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 cyber-border">
+                    <a href="Bank login.html">Create Your Vault</a>
+                </button>
+                <button class="border-2 border-cyan-400 text-cyan-300 hover:bg-cyan-400 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-black bg-opacity-50">
+        <div class="container mx-auto px-8">
+            <h2 class="text-4xl font-bold font-['Orbitron'] text-center mb-16 text-cyan-400">
+                REVOLUTIONARY FEATURES
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="memory-card hologram-effect p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-cyan-400">🔒</div>
+                    <h3 class="text-xl font-bold mb-3">Military-Grade Encryption</h3>
+                    <p class="text-gray-300">256-bit AES encryption ensures your memories remain private and secure.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="memory-card hologram-effect p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-cyan-400">⏰</div>
+                    <h3 class="text-xl font-bold mb-3">Time-Release Access</h3>
+                    <p class="text-gray-300">Set specific conditions for when your memories become accessible to loved ones.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="memory-card hologram-effect p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-cyan-400">🎭</div>
+                    <h3 class="text-xl font-bold mb-3">3D Holographic Storage</h3>
+                    <p class="text-gray-300">Store photos, videos, and voice recordings in immersive 3D format.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="memory-card hologram-effect p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-cyan-400">🤖</div>
+                    <h3 class="text-xl font-bold mb-3">AI Memory Curator</h3>
+                    <p class="text-gray-300">Intelligent organization and storytelling from your stored memories.</p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="memory-card hologram-effect p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-cyan-400">🌐</div>
+                    <h3 class="text-xl font-bold mb-3">Global Access</h3>
+                    <p class="text-gray-300">Access your memories from anywhere in the world, anytime.</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="memory-card hologram-effect p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-cyan-400">💾</div>
+                    <h3 class="text-xl font-bold mb-3">Blockchain Backup</h3>
+                    <p class="text-gray-300">Decentralized storage ensures your memories are never lost.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="py-20">
+        <div class="container mx-auto px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold font-['Orbitron'] mb-6 text-cyan-400">
+                        BANK-LEVEL SECURITY
+                    </h2>
+                    <p class="text-lg text-gray-300 mb-6">
+                        Your memories deserve the highest level of protection. We employ the same security protocols used by leading financial institutions.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="encryption-badge w-6 h-6 bg-green-500 rounded-full mr-4"></div>
+                            <span>Multi-factor authentication</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="encryption-badge w-6 h-6 bg-green-500 rounded-full mr-4"></div>
+                            <span>End-to-end encryption</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="encryption-badge w-6 h-6 bg-green-500 rounded-full mr-4"></div>
+                            <span>Biometric access controls</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="encryption-badge w-6 h-6 bg-green-500 rounded-full mr-4"></div>
+                            <span>Zero-knowledge proof architecture</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="cyber-border rounded-xl overflow-hidden">
+                        <img src="https://placehold.co/800x500" alt="Futuristic security control room with multiple holographic displays showing encryption algorithms and security protocols" class="w-full h-auto" />
+                    </div>
+                    <div class="absolute -bottom-4 -right-4 bg-cyan-500 text-black px-4 py-2 rounded-lg font-['Orbitron'] font-bold">
+                        SECURE
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memories Gallery -->
+    <section id="memories" class="py-20 bg-black bg-opacity-50">
+        <div class="container mx-auto px-8">
+            <h2 class="text-4xl font-bold font-['Orbitron'] text-center mb-16 text-cyan-400">
+                MEMORY GALLERY
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flip-text group">
+                    <div class="flip-text-inner">
+                        <div class="flip-text-front cyber-border rounded-xl overflow-hidden">
+                            <img src="https://placehold.co/400x300" alt="Family gathering around a birthday cake with smiling faces and warm lighting" class="w-full h-48 object-cover" />
+                            <div class="p-4">
+                                <h3 class="font-bold">Family Celebration</h3>
+                                <p class="text-sm text-gray-400">December 25, 2023</p>
+                            </div>
+                        </div>
+                        <div class="flip-text-back bg-cyan-500 rounded-xl p-4 flex items-center justify-center">
+                            <p class="text-white text-center">"The best Christmas ever with everyone together"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-text group">
+                    <div class="flip-text-inner">
+                        <div class="flip-text-front cyber-border rounded-xl overflow-hidden">
+                            <img src="https://placehold.co/400x300" alt="Graduation ceremony with cap and gown against a blue sky backdrop" class="w-full h-48 object-cover" />
+                            <div class="p-4">
+                                <h3 class="font-bold">Graduation Day</h3>
+                                <p class="text-sm text-gray-400">June 15, 2022</p>
+                            </div>
+                        </div>
+                        <div class="flip-text-back bg-cyan-500 rounded-xl p-4 flex items-center justify-center">
+                            <p class="text-white text-center">"All those late nights finally paid off. So proud!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-text group">
+                    <div class="flip-text-inner">
+                        <div class="flip-text-front cyber-border rounded-xl overflow-hidden">
+                            <img src="https://placehold.co/400x300" alt="Sunset beach vacation with footprints in the sand and orange sky" class="w-full h-48 object-cover" />
+                            <div class="p-4">
+                                <h3 class="font-bold">Beach Vacation</h3>
+                                <p class="text-sm text-gray-400">August 7, 2021</p>
+                            </div>
+                        </div>
+                        <div class="flip-text-back bg-cyan-500 rounded-xl p-4 flex items-center justify-center">
+                            <p class="text-white text-center">"The perfect ending to a perfect day. Pure bliss."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20">
+        <div class="container mx-auto px-8 text-center">
+            <h2 class="text-4xl font-bold font-['Orbitron'] mb-6 text-cyan-400">
+                START YOUR LEGACY TODAY
+            </h2>
+            <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                Don't let your precious memories fade away. Secure them for future generations with the most advanced memory preservation technology available.
+            </p>
+            <button class="bg-cyan-500 hover:bg-cyan-600 text-white px-12 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 cyber-glow">
+               <a href="Bank login.html"> Create Free Account </a>
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-black bg-opacity-80 py-12">
+        <div class="container mx-auto px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-cyan-400 font-bold mb-4">Afterlife BANK</h3>
+                    <p class="text-gray-400">Preserving your legacy with cutting-edge technology and unwavering security.</p>
+                </div>
+                <div>
+                    <h3 class="text-cyan-400 font-bold mb-4">QUICK LINKS</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyan-400">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-cyan-400 font-bold mb-4">CONTACT</h3>
+                    <p class="text-gray-400">support@Afterlifebank.com</p>
+                    <p class="text-gray-400">+1 (555) 123-4567</p>
+                </div>
+                <div>
+                    <h3 class="text-cyan-400 font-bold mb-4">CREATED BY</h3>
+                    <p class="text-gray-400">Abdul Ahad</p>
+                    <p class="text-gray-400">Innovating the future of memory preservation</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">© 2025 Afterlife Bank | All rights reserved | Secure | Private | Eternal | Made By Abdul Ahad ||</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 3D Particle Network
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `rgba(0, 212, 255, ${Math.random() * 0.5})`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.speedY = -this.speedY;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 212, 255, ${0.1 * (1 - distance/100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(animateParticles);
+        }
+
+        createParticles();
+        animateParticles();
+
+        // Interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Typewriter effect
+            const texts = [
+                "Preserving your legacy for generations to come",
+                "Secure encrypted memory storage",
+                "Your digital legacy awaits",
+                "Memories that live forever"
+            ];
+            let textIndex = 0;
+            let charIndex = 0;
+            let currentText = '';
+            let isDeleting = false;
+            let isEnd = false;
+
+            function typeWriter() {
+                isEnd = false;
+                const typewriter = document.querySelector('.typewriter');
+                
+                if (isDeleting) {
+                    currentText = texts[textIndex].substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    currentText = texts[textIndex].substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                typewriter.textContent = currentText;
+                typewriter.style.width = currentText.length + 'ch';
+
+                if (!isDeleting && charIndex === texts[textIndex].length) {
+                    isEnd = true;
+                    isDeleting = true;
+                    setTimeout(typeWriter, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex++;
+                    if (textIndex >= texts.length) textIndex = 0;
+                    setTimeout(typeWriter, 500);
+                } else {
+                    const typeSpeed = isDeleting ? 50 : 100;
+                    setTimeout(typeWriter, isEnd ? 2000 : typeSpeed);
+                }
+            }
+
+            setTimeout(typeWriter, 1000);
+
+            // Floating animation for cards
+            const cards = document.querySelectorAll('.memory-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+
+            // Encryption badge pulse
+            const badges = document.querySelectorAll('.encryption-badge');
+            badges.forEach((badge, index) => {
+                badge.style.animationDelay = `${index * 0.5}s`;
+            });
+        });
+
+        // Simple encryption demo (for show)
+        function demoEncryption() {
+            const elements = document.querySelectorAll('.cyber-glow');
+            elements.forEach(el => {
+                el.style.boxShadow = '0 0 40px rgba(0, 212, 255, 0.8)';
+                setTimeout(() => {
+                    el.style.boxShadow = '0 0 20px rgba(0, 212, 255, 0.3)';
+                }, 1000);
+            });
+        }
+
+        // Run encryption demo every 5 seconds
+        setInterval(demoEncryption, 5000);
+    </script>
+</body>
+</html>
+

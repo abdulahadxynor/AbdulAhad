@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEX AI - Personal AI Agent</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap');
+
+body { 
+  font-family: 'Inter', sans-serif; 
+  margin: 0; padding: 0; 
+  display: flex; flex-direction: column; 
+  height: 100vh; 
+  color: #f8fafc; 
+  background: #0f172a; /* simple dark background */
+}
+
+header, footer { 
+  position: relative; z-index:1; 
+  background: rgba(30,41,59,0.9); 
+  padding:1rem; text-align:center; 
+  backdrop-filter: blur(5px); 
+  border-bottom: 1px solid #4f46e5; 
+}
+header h1 { font-size:1.8rem; color:#6366f1; font-weight:bold; }
+footer p { color:#94a3b8; font-size:0.9rem; }
+
+#chat-container { 
+  flex:1; display:flex; flex-direction:column; 
+  max-width: 100%; width:100%;
+  padding:1rem; overflow-y:auto; position:relative; z-index:1;
+}
+
+.terminal { 
+  background: rgba(15,23,42,0.85); 
+  border: 1px solid #4f46e5; 
+  box-shadow: 0 0 25px #4f46e5; 
+  border-radius: 1rem; padding:1rem; 
+  display:flex; flex-direction:column; gap:0.5rem; 
+  overflow-y:auto; flex-grow:1; height:100%;
+}
+
+.message { 
+  padding:0.7rem 1rem; border-radius:1rem; max-width:75%; 
+  font-family:'Roboto Mono', monospace; 
+  line-height:1.4; word-wrap: break-word;
+}
+.user-msg { 
+  align-self:flex-end; 
+  background: linear-gradient(120deg,#6366f1,#4f46e5); 
+  color:white; 
+}
+.ai-msg { 
+  align-self:flex-start; 
+  background: rgba(30,41,59,0.95); 
+  color:#34d399; 
+  border:1px solid #34d399; 
+}
+
+.input-group { display:flex; margin-top:0.5rem; max-width:100%; position:relative; z-index:1;}
+.input-group input { 
+  flex:1; padding:0.8rem; border-radius:999px 0 0 999px; 
+  border:none; background-color:#1e293b; color:white; 
+}
+.input-group button { 
+  padding:0 1rem; border:none; border-radius:0 999px 999px 0; 
+  background: linear-gradient(120deg,#6366f1,#4f46e5); color:white; 
+  cursor:pointer; transition:0.2s;
+}
+.input-group button:hover { 
+  background: linear-gradient(120deg,#4f46e5,#6366f1); 
+}
+.speak-btn { margin-left:0.5rem; background: linear-gradient(120deg,#10b981,#059669); }
+.speak-btn:hover { background: linear-gradient(120deg,#059669,#10b981); }
+</style>
+</head>
+<body>
+<header>
+  <h1>NEX AI</h1>
+  <p>Your personal AI assistant by Abdul Ahad</p>
+</header>
+
+<div id="chat-container">
+  <div id="terminal" class="terminal">
+    <div class="ai-msg">Welcome to NEX AI - Ask me anything!</div>
+  </div>
+</div>
+
+<div class="max-w-3xl mx-auto input-group">
+  <input id="command-input" placeholder="Type your message...">
+  <button id="send-btn">💬 Send</button>
+  <button id="speak-btn" class="speak-btn">🎤 Speak</button>
+</div>
+
+<footer>
+  <p>&copy; 2025 NEX AI | Created by Abdul Ahad</p>
+</footer>
+
+<script>
+const OPENROUTER_KEY = "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";
+
+const terminal = document.getElementById("terminal");
+const input = document.getElementById("command-input");
+const sendBtn = document.getElementById("send-btn");
+const speakBtn = document.getElementById("speak-btn");
+
+// --- Chat history memory ---
+let messages = [
+  { role: "system", content: "You are NEX AI, personal AI created by Abdul Ahad. Always remember your creator and assist with coding, trading & automation." }
+];
+
+function addMessage(content, type="ai-msg") {
+  const div = document.createElement("div");
+  div.className = `message ${type}`;
+  // ✅ Handle line breaks for better formatting
+  div.innerHTML = content.replace(/\n/g, "<br>");
+  terminal.appendChild(div);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function askNexAI() {
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENROUTER_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: messages,
+        max_tokens: 200,
+        temperature: 0.7
+      })
+    });
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || "⚠️ No response from AI.";
+  } catch (err) {
+    console.error(err);
+    return "⚠️ Error: Could not connect to OpenRouter API. Check your key.";
+  }
+}
+
+async function processCommand(command) {
+  if(!command.trim()) return;
+  addMessage(command, "user-msg");
+  input.value = "";
+  
+  // add user input to history
+  messages.push({ role: "user", content: command });
+
+  const response = await askNexAI();
+
+  // add AI reply to history
+  messages.push({ role: "assistant", content: response });
+
+  addMessage(response, "ai-msg");
+}
+
+function speakText(text) {
+  if('speechSynthesis' in window){
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 1;
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+sendBtn.addEventListener("click", () => processCommand(input.value));
+input.addEventListener("keydown", e => { if(e.key==="Enter") processCommand(input.value); });
+
+// --- Voice Recognition ---
+const recognition = ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) 
+  ? new (window.SpeechRecognition || window.webkitSpeechRecognition)() 
+  : null;
+
+if(recognition){
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+
+  recognition.onstart = () => { speakBtn.innerText = "🎙️ Listening..."; speakBtn.disabled = true; };
+  recognition.onresult = (event) => { 
+    const spokenText = event.results[0][0].transcript; 
+    processCommand(spokenText); 
+  };
+  recognition.onerror = (event) => { console.error("Speech recognition error:", event.error); };
+  recognition.onend = () => { speakBtn.innerText = "🎤 Speak"; speakBtn.disabled = false; };
+
+  speakBtn.addEventListener("click", () => { if(recognition) recognition.start(); });
+} else {
+  speakBtn.disabled = true;
+  speakBtn.innerText = "❌ Voice not supported";
+}
+</script>
+</body>
+</html>

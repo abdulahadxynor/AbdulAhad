@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title> Login </title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+       header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 1000; /* Stays on top */
+    }
+
+      
+    .logo {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      overflow-y: auto; /* Allow vertical scroll if content exceeds viewport */
+    }
+
+    /* --- Video Background Styles --- */
+    .video-background {
+      position: fixed; /* Stays in place */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures video covers the entire screen */
+      z-index: -10; /* Puts it furthest back */
+    }
+
+    .video-overlay {
+      position: fixed; /* Stays in place */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay for readability */
+      z-index: -9; /* Above video, below content */
+    }
+    /* --- End Video Background Styles --- */
+
+    /* Removed original body background as video will cover it */
+    /* body {
+      background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffee);
+      background-size: 400% 400%;
+      animation: moveBg 15s ease infinite;
+    } */
+
+    /* @keyframes moveBg { /* This animation is now unused */
+      /* 0% { background-position: 0% 50%; } */
+      /* 50% { background-position: 100% 50%; } */
+      /* 100% { background-position: 0% 50%; } */
+    /* } */
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 350px;
+      margin: 80px auto;
+      transform: perspective(800px) rotateY(10deg);
+      transition: 0.4s ease;
+      position: relative; /* Essential for z-index to work */
+      z-index: 1; /* Ensures container is above video overlay */
+    }
+
+    .container:hover {
+      transform: perspective(800px) rotateY(0deg) scale(1.05);
+    }
+
+    .expandable {
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .expandable:hover .form {
+      max-height: 400px; /* Adjusted max-height if needed for content */
+      padding: 20px;
+    }
+
+    .title {
+      background: linear-gradient(90deg, #2196f3, #9c27b0);
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .form {
+      max-height: 0;
+      overflow: hidden;
+      background-color: rgba(255, 255, 255, 0.85);
+      transition: all 0.5s ease;
+    }
+
+    .form input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .form button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #2196f3, #9c27b0);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .form button:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+    <header>
+         <div class="logo">LRB Colection</div>
+<nav>
+      <a href="#">Home</a>
+      <a href="product.html">Products</a>
+      <a href="Contact Us.html">Contact</a>
+      <a href="login&signup.html">SignUp&LogIn</a>
+    </nav>
+    </header>        <br> <br>   <br> <br> <br> 
+
+  <video class="video-background" autoplay muted loop>
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="video-overlay"></div>
+
+  <div class="container">
+    <div class="expandable">
+      <div class="title">Sign Up</div>
+      <div class="form">
+        <input type="text" id="signupName" placeholder="Full Name">
+        <input type="text" id="signupUser" placeholder="Username">
+        <input type="password" id="signupPass" placeholder="Password">
+        <button onclick="signup()">Sign Up</button>
+      </div>
+    </div>
+
+    <div class="expandable">
+      <div class="title">Log In</div>
+      <div class="form">
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button onclick="login()">Log In</button>
+      </div>
+    </div>
+  </div>
+
+  
+  
+
+  <script>
+    function signup() {
+      const name = document.getElementById("signupName").value;
+      const username = document.getElementById("signupUser").value;
+      const password = document.getElementById("signupPass").value;
+
+      if (!name || !username || !password) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      // Basic validation for username length
+      if (username.length < 3) {
+          alert("Username must be at least 3 characters long.");
+          return;
+      }
+      // Basic validation for password strength
+      if (password.length < 6) {
+          alert("Password must be at least 6 characters long.");
+          return;
+      }
+
+
+      const userData = { name, password };
+      localStorage.setItem("user_" + username, JSON.stringify(userData));
+      localStorage.setItem("loggedInUser", name); // Store the name of the logged-in user
+      alert("Sign up successful!");
+      window.location.href = "index.html";
+    }
+
+    function login() {
+      const username = document.getElementById("loginUser").value;
+      const password = document.getElementById("loginPass").value;
+
+      const savedData = localStorage.getItem("user_" + username);
+      if (savedData) {
+        const userData = JSON.parse(savedData);
+        if (userData.password === password) {
+          localStorage.setItem("loggedInUser", userData.name); // Store the name of the logged-in user
+          window.location.href = "home.html";
+        } else {
+          alert("Wrong password.");
+        }
+      } else {
+        alert("User not found.");
+      }
+    }
+
+    // Optional: Auto-expand a section if needed, e.g., on page load
+    // You could add logic here to open login or signup by default
+    // For example, to open login by default:
+    // document.querySelector('.expandable:nth-child(2) .form').style.maxHeight = '400px';
+    // document.querySelector('.expandable:nth-child(2) .form').style.padding = '20px';
+  </script>
+
+</body>
+</html>

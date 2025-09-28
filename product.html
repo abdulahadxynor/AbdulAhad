@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LRB Colection - Trending Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <style>
+
+
+
+      
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      height: auto;
+      min-height: 100%;
+      overflow-x: hidden; /* Stop side scroll only */
+      overflow-y: auto;    /* Allow up-down scroll */
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10;
+    }
+
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3); /* Adjust darkness */
+      z-index: -9;
+    }
+
+    .content {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.4); /* Optional overlay */
+    }
+    .content h1 {
+      font-size: 3rem;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    .content button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background-color: #ff00cc;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .content button:hover {
+      background-color: #ff66cc;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #8e2de2, #4a00e0, #1b1b2f, #120032);
+      background-size: 400% 400%;
+      animation: animatedGradient 20s ease infinite;
+      color: #fff;
+    }
+
+    .wishlist-icon {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .wishlist-icon:hover {
+      transform: scale(1.2);
+    }
+    .wishlist-icon.added {
+      color: red;
+      content: '❤️';
+    }
+
+    @keyframes animatedGradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    header, footer {
+      background-color: rgba(0, 0, 0, 0.3);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      backdrop-filter: blur(6px);
+      position: relative; /* Added to ensure z-index works relative to other content */
+      z-index: 1; /* Ensures header is above the video overlay */
+    }
+
+    header nav {
+      margin-top: 10px;
+    }
+
+    header nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      padding: 5px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    header nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .horizontal-scroll {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 1rem;
+      gap: 2rem;
+      position: relative; /* Added */
+      z-index: 1; /* Ensures this section is above the video overlay */
+    }
+
+    .horizontal-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scroll-box {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      border-radius: 20px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .scroll-box:hover {
+      transform: scale(1.05);
+    }
+
+    .scroll-box img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+
+    .products-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      position: relative; /* Added */
+      z-index: 1; /* Ensures this section is above the video overlay */
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px) scale(1.02);
+    }
+
+    .product-card img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+
+    .product-title {
+      margin: 1rem 0 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .product-price {
+      color: #ffeb3b;
+      font-weight: bold;
+    }
+
+    .add-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #ffeb3b;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+      transition: background 0.3s;
+    }
+
+    .add-btn:hover {
+      background: #ffe033;
+    }
+
+    .cart-section {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2rem;
+      margin: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(6px);
+      position: relative; /* Added */
+      z-index: 1; /* Ensures this section is above the video overlay */
+    }
+
+    .cart-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .cart-item {
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .note {
+      border: 2px dashed #fff;
+      margin-top: 2rem;
+      padding: 1rem;
+      text-align: center;
+      background-color: rgba(0,0,0,0.2);
+    }
+
+    @media(max-width: 600px) {
+      header {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  🛍️ Welcome to LRB Colection
+  <nav>
+    <a href="index.html"><b>Home</b></a>
+  </nav>
+</header>
+
+<video class="video-background" autoplay muted loop>
+  <source src="background.mp4" type="video/mp4">
+  </video>
+<div class="video-overlay"></div>
+
+<strong style="text-align:center; display: block; font-size: 1.5rem; margin-top: 2rem; z-index: 1; position: relative;"> 🔥Our Trending Products </strong>
+
+<section class="horizontal-scroll">
+  <div class="scroll-box" data-aos="fade-right"><img src="https://i.imgur.com/nz6bKXw.jpg"><p>Stylish Earrings</p></div>
+  <div class="scroll-box" data-aos="fade-up"><img src="https://i.imgur.com/JZ6VmNs.jpg"><p>Gold Bracelet</p></div>
+  <div class="scroll-box" data-aos="fade-left"><img src="https://i.imgur.com/qGxG0VA.jpg"><p>Elegant Necklace</p></div>
+  <div class="scroll-box" data-aos="zoom-in"><img src="https://i.imgur.com/xs5FkYX.jpg"><p>Trendy Bangles</p></div>
+  <div class="scroll-box" data-aos="zoom-in-left"><img src="https://i.imgur.com/pgcRrPt.jpg"><p>Luxury Ring</p></div>
+
+  <div class="scroll-box" data-aos="fade-right" data-aos-delay="100"><img src="https://i.imgur.com/nz6bKXw.jpg"><p>Stylish Earrings</p></div>
+  <div class="scroll-box" data-aos="fade-up" data-aos-delay="150"><img src="https://i.imgur.com/JZ6VmNs.jpg"><p>Gold Bracelet</p></div>
+  <div class="scroll-box" data-aos="fade-left" data-aos-delay="200"><img src="https://i.imgur.com/qGxG0VA.jpg"><p>Elegant Necklace</p></div>
+  <div class="scroll-box" data-aos="zoom-in" data-aos-delay="250"><img src="https://i.imgur.com/xs5FkYX.jpg"><p>Trendy Bangles</p></div>
+  <div class="scroll-box" data-aos="zoom-in-left" data-aos-delay="300"><img src="https://i.imgur.com/pgcRrPt.jpg"><p>Luxury Ring</p></div>
+</section>
+
+<section class="products-section" id="products">
+        
+
+  <div class="product-card" data-aos="fade-up"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,earrings" alt="Product 1"><span class="wishlist-icon" data-index="0">🤍</span><div class="product-title">Sparkling Studs</div><div class="product-price">Rs. 1500</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="100"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,necklace" alt="Product 2"><span class="wishlist-icon" data-index="1">🤍</span><div class="product-title">Diamond Pendant</div><div class="product-price">Rs. 5500</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="200"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,bracelet" alt="Product 3"><span class="wishlist-icon" data-index="2">🤍</span><div class="product-title">Silver Chain</div><div class="product-price">Rs. 2000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="300"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,ring" alt="Product 4"><span class="wishlist-icon" data-index="3">🤍</span><div class="product-title">Emerald Ring</div><div class="product-price">Rs. 7000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,bangle" alt="Product 5"><span class="wishlist-icon" data-index="4">🤍</span><div class="product-title">Crystal Bangle</div><div class="product-price">Rs. 1800</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="100"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,anklet" alt="Product 6"><span class="wishlist-icon" data-index="5">🤍</span><div class="product-title">Delicate Anklet</div><div class="product-price">Rs. 900</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="200"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,watch" alt="Product 7"><span class="wishlist-icon" data-index="6">🤍</span><div class="product-title">Luxury Watch</div><div class="product-price">Rs. 12000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="300"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,cufflinks" alt="Product 8"><span class="wishlist-icon" data-index="7">🤍</span><div class="product-title">Elegant Cufflinks</div><div class="product-price">Rs. 3000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,brooch" alt="Product 9"><span class="wishlist-icon" data-index="8">🤍</span><div class="product-title">Vintage Brooch</div><div class="product-price">Rs. 2500</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="100"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,pendant" alt="Product 10"><span class="wishlist-icon" data-index="9">🤍</span><div class="product-title">Heart Pendant</div><div class="product-price">Rs. 4000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="200"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,charms" alt="Product 11"><span class="wishlist-icon" data-index="10">🤍</span><div class="product-title">Charm Bracelet</div><div class="product-price">Rs. 3500</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="300"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,chain" alt="Product 12"><span class="wishlist-icon" data-index="11">🤍</span><div class="product-title">Thick Chain</div><div class="product-price">Rs. 6000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,pearl" alt="Product 13"><span class="wishlist-icon" data-index="12">🤍</span><div class="product-title">Pearl Necklace</div><div class="product-price">Rs. 8000</div><button class="add-btn">Add to Cart</button></div>
+  <div class="produdata-aos="fade-up" data-aos-delay="100"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,gemstone" alt="Product 14"><span class="wishlist-icon" data-index="13">🤍</span><div class="product-title">Gemstone Ring</div><div class="product-price">Rs. 9500</div><button class="add-btn">Add to Cart</button></div>
+  <div class="product-card" data-aos="fade-up" data-aos-delay="200"><img src="https://source.unsplash.com/300x300/?jewelry,accessory,hoop" alt="Product 15"><span class="wishlist-icon" data-index="14">🤍</span><div class="product-title">Hoop Earrings</div><div class="product-price">Rs. 1200</div><button class="add-btn">Add to Cart</button></div>
+</section>
+
+<section class="cart-section">
+  <h2>🛒 Your Cart</h2>
+  <div id="cart-items"></div>
+  <p><strong>Subtotal: Rs. <span id="subtotal">0</span></strong></p>
+
+  <div class="note">
+    📸 <strong>Take a screenshot of your selected products and send it to our WhatsApp: <br><br> <u>+92-XXX-XXXXXXX</u></strong>
+  </div>
+</section>
+
+<footer>© 2025 LRB Colection. All rights reserved.</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 1000, once: false });
+</script>
+
+<script>
+  // This JavaScript now generates products beyond what's hardcoded for demonstration
+  // The hardcoded products above are just to ensure enough scrollable content from the start.
+  // The JS will add 20 more distinct products.
+  const products = Array.from({ length: 20 }, (_, i) => ({
+    name: `Exclusive Item ${i + 1}`,
+    price: (i + 1) * 1000 + 500, // Slightly different prices
+    image: `https://source.unsplash.com/300x300/?luxury-jewelry,stylish-accessory,premium-product&sig=${i + 100}` // Different sig for distinct images
+  }));
+
+  const productsContainer = document.getElementById("products");
+  const cartItemsContainer = document.getElementById("cart-items");
+  const subtotalElement = document.getElementById("subtotal");
+  let cart = [];
+
+  // Append dynamically generated products
+  products.forEach((product, index) => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.setAttribute("data-aos", "fade-up");
+    card.setAttribute("data-aos-delay", index * 50 + 400); // Add delay to differentiate from hardcoded ones
+
+    card.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <span class="wishlist-icon" data-index="${index}">🤍</span>
+      <div class="product-title">${product.name}</div>
+      <div class="product-price">Rs. ${product.price}</div>
+      <button class="add-btn">Add to Cart</button>
+    `;
+
+    card.querySelector(".add-btn").addEventListener("click", () => addToCart(product));
+    productsContainer.appendChild(card);
+  });
+
+  function addToCart(product) {
+    cart.push(product);
+    renderCart();
+  }
+
+  function renderCart() {
+    cartItemsContainer.innerHTML = "";
+    let total = 0;
+    cart.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.textContent = `${item.name} - Rs. ${item.price}`;
+      cartItemsContainer.appendChild(div);
+      total += item.price;
+    });
+    subtotalElement.textContent = total;
+  }
+</script>
+
+</body>
+</html>                                                                                                                 
