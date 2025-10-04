@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://abdulahadxynor.github.io/AbdulAhad/sitemap.xml
